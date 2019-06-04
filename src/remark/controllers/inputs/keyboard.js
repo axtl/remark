@@ -53,6 +53,18 @@ Keyboard.prototype.addKeyboardEventListeners = function () {
       case 27: // Escape
         events.emit('hideOverlay');
         break;
+      case 124: //F13
+        events.emit('toggleHelp');
+        break;
+      case 127: //F16
+        events.emit('togglePresenterMode');
+        break;
+      case 128: //F17
+        events.emit('toggleFullscreen');
+        break;
+      case 129: //F18
+        events.emit('resetTimer');
+        break;
       case 13: // Return
         if (self._gotoSlideNumber) {
           events.emit('gotoSlideNumber', self._gotoSlideNumber);
@@ -60,65 +72,6 @@ Keyboard.prototype.addKeyboardEventListeners = function () {
         }
         break;
     }
-  });
-
-  events.on('keypress', function (event) {
-    if (event.metaKey || event.ctrlKey) {
-      // Bail out if meta or ctrl key was pressed
-      return;
-    }
-
-    var key = String.fromCharCode(event.which).toLowerCase();
-    var tryToPreventDefault = true;
-
-    switch (key) {
-      case 'j':
-        events.emit('gotoNextSlide');
-        break;
-      case 'k':
-        events.emit('gotoPreviousSlide');
-        break;
-      case 'b':
-        events.emit('toggleBlackout');
-        break;
-      case 'm':
-        events.emit('toggleMirrored');
-        break;
-      case 'c':
-        events.emit('createClone');
-        break;
-      case 'p':
-        events.emit('togglePresenterMode');
-        break;
-      case 'f':
-        events.emit('toggleFullscreen');
-        break;
-      case 't':
-        events.emit('resetTimer');
-        break;
-      case '1':
-      case '2':
-      case '3':
-      case '4':
-      case '5':
-      case '6':
-      case '7':
-      case '8':
-      case '9':
-      case '0':
-        self._gotoSlideNumber += key;
-        break;
-      case 'h':
-      case '?':
-        events.emit('toggleHelp');
-        break;
-      default:
-        tryToPreventDefault = false;
-    }
-
-    if (tryToPreventDefault && event && event.preventDefault)
-      event.preventDefault();
-
   });
 };
 
