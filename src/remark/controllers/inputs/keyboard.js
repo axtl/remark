@@ -28,20 +28,9 @@ Keyboard.prototype.addKeyboardEventListeners = function () {
 
     switch (event.keyCode) {
       case 33: // Page up
-      case 37: // Left
-      case 38: // Up
         events.emit('gotoPreviousSlide');
         break;
-      case 32: // Space
-        if(event.shiftKey){ // Shift+Space
-          events.emit('gotoPreviousSlide');
-        }else{
-          events.emit('gotoNextSlide');
-        }
-        break;
       case 34: // Page down
-      case 39: // Right
-      case 40: // Down
         events.emit('gotoNextSlide');
         break;
       case 36: // Home
