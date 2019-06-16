@@ -42,16 +42,16 @@ Keyboard.prototype.addKeyboardEventListeners = function () {
       case 27: // Escape
         events.emit('hideOverlay');
         break;
-      case 124: //F13
-        events.emit('toggleHelp');
+      case 118: //F7
+        events.emit('createClone');
         break;
-      case 127: //F16
+      case 121: //F10
         events.emit('togglePresenterMode');
         break;
-      case 128: //F17
+      case 120: //F9
         events.emit('toggleFullscreen');
         break;
-      case 129: //F18
+      case 119: //F8
         events.emit('resetTimer');
         break;
       case 13: // Return
