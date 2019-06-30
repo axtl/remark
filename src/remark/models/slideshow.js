@@ -23,6 +23,7 @@ function Slideshow (events, dom, options, callback) {
 
   self.loadFromString = loadFromString;
   self.loadFromUrl = loadFromUrl;
+  self.loadFromUris = loadFromUris;
   self.update = update;
   self.getLinks = getLinks;
   self.getSlides = getSlides;
@@ -60,7 +61,10 @@ function Slideshow (events, dom, options, callback) {
     }
   });
 
-  if (options.sourceUrl) {
+  if (options.sourceUris) {
+    loadFromUris(options.sourceUris, callback);
+  }
+  else if (options.sourceUrl) {
     loadFromUrl(options.sourceUrl, callback);
   }
   else {
@@ -109,6 +113,41 @@ function Slideshow (events, dom, options, callback) {
     };
     xhr.send(null);
     return xhr;
+  }
+
+  function loadFromUris(uris, callback) {
+      options.source = options.source || '';
+      var xhr = new dom.XMLHttpRequest();
+
+      (function loop(i, length) {
+          if (i >= length) {
+              loadFromString(options.source);
+              if (typeof callback === 'function') {
+                  callback(self);
+              }
+              return;
+          }
+
+          var uri = location.origin + "/" + options.sourceUris[i];
+
+          xhr.open('GET', uri, true);
+          xhr.onload = function(e) {
+              if (xhr.readyState === 4) {
+                  if (xhr.status === 200) {
+                      options.source = options.source.concat('\n', xhr.responseText.replace(/\r\n/g, '\n'));
+                      // next source file
+                      loop(i + 1, length);
+                  } else {
+                      throw Error(xhr.statusText);
+                  }
+              }
+          };
+          xhr.onerror = function(e) {
+              throw Error(xhr.statusText);
+          };
+          xhr.send(null);
+          return xhr;
+      })(0, options.sourceUris.length);
   }
 
   function update () {
