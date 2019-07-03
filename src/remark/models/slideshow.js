@@ -112,6 +112,7 @@ function Slideshow (events, dom, options, callback) {
       throw Error(xhr.statusText);
     };
     xhr.send(null);
+    events.emit('contentLoaded');
     return xhr;
   }
 
@@ -125,6 +126,7 @@ function Slideshow (events, dom, options, callback) {
               if (typeof callback === 'function') {
                   callback(self);
               }
+              events.emit('contentLoaded');
               return;
           }
 
